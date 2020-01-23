@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package config;
+
+message User {
+    int32 id = 1;
+    string name = 2;
+    string surname = 3;
+    int32 age = 4;
+
+}
+
+message Account {
+    string email = 1;
+    string passwordHash = 2;
+}
+
+service AuthService {
+    rpc Authenticate (Account) returns (User) {};
+}
+
+
