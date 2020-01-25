@@ -1,4 +1,4 @@
-module github.com/ArtGooner/test-microservice/config
+module github.com/ArtGooner/test-microservice
 
 go 1.12
 
