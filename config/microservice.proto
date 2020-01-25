@@ -6,16 +6,17 @@ message User {
     int32 id = 1;
     string name = 2;
     string surname = 3;
-    int32 age = 4;
-
+    string email = 4;
+    int32 age = 5;
+    bytes passwordHash = 6;
 }
 
 message Account {
     string email = 1;
-    string passwordHash = 2;
+    string password = 2;
 }
 
-service AuthService {
+service UserService {
     rpc Authenticate (Account) returns (User) {};
 }
 
