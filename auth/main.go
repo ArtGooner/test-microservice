@@ -1,8 +1,9 @@
-package  main
+package main
 
 import (
 	"context"
-	pb "github.com/ArtGooner/test-microservice/config/config"
+	"github.com/ArtGooner/test-microservice/auth/user"
+	pb "github.com/ArtGooner/test-microservice/config"
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -13,13 +14,27 @@ const (
 )
 
 type server struct {
-	pb.UnimplementedAuthServiceServer
+	pb.UnimplementedUserServiceServer
 }
 
 func (s *server) Authenticate(ctx context.Context, in *pb.Account) (*pb.User, error) {
-	log.Printf("Email: %v", in.GetEmail())
-	log.Printf("PasswordHash: %v", in.GetPasswordHash())
-	return &pb.User{Id: 1, Name: "Artsiom", Surname: "Ivaniutsenka", Age: 27}, nil
+	rps, err := user.NewRepository()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	res, err := rps.Get(in)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if res == nil {
+		return nil, nil
+	}
+
+	return &pb.User{Id: res.Id, Name: res.Name, Surname: res.Surname, Age: res.Age, PasswordHash: res.PasswordHash}, nil
 }
 
 func main() {

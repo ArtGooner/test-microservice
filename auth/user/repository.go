@@ -3,12 +3,12 @@ package user
 import (
 	"crypto/sha256"
 	"database/sql"
-	pb "github.com/ArtGooner/test-microservice/config/config"
+	pb "github.com/ArtGooner/test-microservice/config"
 )
 
 type Repository interface {
 	//Create(user *User) error
-	Get(user *pb.Account) (*pb.Account, error)
+	Get(user *pb.Account) (*pb.User, error)
 }
 type repository struct {
 	db *sql.DB
@@ -34,11 +34,11 @@ func (r repository) Get(acc *pb.Account) (*pb.User, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var id int
+		var id int32
 		var email string
 		var name string
 		var surname string
-		var age string
+		var age int32
 		var passwordHash []byte
 
 		err := rows.Scan(&id, &email, &name, &surname, &age, &passwordHash)
